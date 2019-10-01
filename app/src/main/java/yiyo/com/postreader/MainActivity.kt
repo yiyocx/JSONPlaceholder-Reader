@@ -2,11 +2,13 @@ package yiyo.com.postreader
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager.widget.ViewPager
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import yiyo.com.postreader.ui.main.SectionsPagerAdapter
+import yiyo.com.postreader.ui.main.TAB_TITLES
 import yiyo.com.postreader.utils.component
 
 class MainActivity : AppCompatActivity() {
@@ -16,16 +18,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         component.inject(this)
 
-        val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
-        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        val sectionsPagerAdapter = SectionsPagerAdapter(this)
+        val viewPager: ViewPager2 = findViewById(R.id.view_pager)
+        viewPager.isUserInputEnabled = false
         viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = findViewById(R.id.tabs)
-        tabs.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
+        val tabs: TabLayout = findViewById(R.id.tabs)
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.text = getString(TAB_TITLES[position])
+        }.attach()
     }
 }

@@ -1,8 +1,5 @@
 package yiyo.com.postreader.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
@@ -12,7 +9,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import yiyo.com.postreader.PostListState
 import yiyo.com.postreader.data.PostRepository
+import yiyo.com.postreader.data.models.PostFull
 import yiyo.com.postreader.utils.MvRxViewModel
+import yiyo.com.postreader.utils.toPostFull
 
 class PageViewModel @AssistedInject constructor(
     @Assisted initialState: PostListState,
@@ -23,19 +22,20 @@ class PageViewModel @AssistedInject constructor(
         postRepository.getPosts()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .execute {
-                copy(it().orEmpty())
+            .execute { result ->
+                val posts = result().orEmpty().mapIndexed { index, post ->
+                    post.toPostFull(index < 20)
+                }
+                copy(posts = posts)
             }
     }
 
-    private val _index = MutableLiveData<Int>()
-    val text: LiveData<String> = Transformations.map(_index) {
-        "Hello world from section: $it"
+    fun removePost(post: PostFull) = setState {
+        val newPosts = posts.filter { it != post }
+        copy(posts = newPosts)
     }
 
-    fun setIndex(index: Int) {
-        _index.value = index
-    }
+    fun removeAllPosts() = setState { copy(posts = emptyList()) }
 
     @AssistedInject.Factory
     interface Factory {
