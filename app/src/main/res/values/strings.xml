@@ -3,4 +3,5 @@
     <string name="tab_text_1">All</string>
     <string name="tab_text_2">Favorites</string>
     <string name="all_post_deleted">All posts were deleted</string>
+    <string name="menu_reload">Reload Posts</string>
 </resources>

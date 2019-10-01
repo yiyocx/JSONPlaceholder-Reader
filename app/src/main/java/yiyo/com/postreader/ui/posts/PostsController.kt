@@ -1,4 +1,4 @@
-package yiyo.com.postreader.ui.main
+package yiyo.com.postreader.ui.posts
 
 import com.airbnb.epoxy.TypedEpoxyController
 import yiyo.com.postreader.data.models.PostFull

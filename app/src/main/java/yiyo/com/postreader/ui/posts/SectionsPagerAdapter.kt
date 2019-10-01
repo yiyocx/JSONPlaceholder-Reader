@@ -1,4 +1,4 @@
-package yiyo.com.postreader.ui.main
+package yiyo.com.postreader.ui.posts
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -14,7 +14,7 @@ class SectionsPagerAdapter(fragment: FragmentActivity) :
     FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment {
-        return PlaceholderFragment.newInstance()
+        return PostListFragment.newInstance()
     }
 
     override fun getItemCount(): Int = TAB_TITLES.size

@@ -1,6 +1,5 @@
-package yiyo.com.postreader.ui.main
+package yiyo.com.postreader.ui
 
-import com.airbnb.mvrx.FragmentViewModelContext
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
@@ -13,21 +12,21 @@ import yiyo.com.postreader.data.models.PostFull
 import yiyo.com.postreader.utils.MvRxViewModel
 import yiyo.com.postreader.utils.toPostFull
 
-class PageViewModel @AssistedInject constructor(
+class MainViewModel @AssistedInject constructor(
     @Assisted initialState: PostListState,
-    postRepository: PostRepository
+    private val postRepository: PostRepository
 ) : MvRxViewModel<PostListState>(initialState) {
 
     init {
+        loadAllPosts()
+    }
+
+    fun loadAllPosts() {
         postRepository.getPosts()
+            .map { it.mapIndexed { index, post -> post.toPostFull(index < 20) } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .execute { result ->
-                val posts = result().orEmpty().mapIndexed { index, post ->
-                    post.toPostFull(index < 20)
-                }
-                copy(posts = posts)
-            }
+            .execute { result -> copy(posts = result().orEmpty()) }
     }
 
     fun removePost(post: PostFull) = setState {
@@ -39,16 +38,15 @@ class PageViewModel @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(initialState: PostListState): PageViewModel
+        fun create(initialState: PostListState): MainViewModel
     }
 
-    companion object : MvRxViewModelFactory<PageViewModel, PostListState> {
+    companion object : MvRxViewModelFactory<MainViewModel, PostListState> {
         override fun create(
             viewModelContext: ViewModelContext,
             state: PostListState
-        ): PageViewModel? {
-            val fragment =
-                (viewModelContext as FragmentViewModelContext).fragment<PlaceholderFragment>()
+        ): MainViewModel? {
+            val fragment = viewModelContext.activity<MainActivity>()
             return fragment.viewModelFactory.create(state)
         }
     }
