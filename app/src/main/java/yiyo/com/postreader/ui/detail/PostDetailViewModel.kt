@@ -6,18 +6,24 @@ import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.schedulers.Schedulers
+import yiyo.com.postreader.data.repositories.PostRepository
 import yiyo.com.postreader.data.repositories.UserRepository
 import yiyo.com.postreader.utils.MvRxViewModel
 
 class PostDetailViewModel @AssistedInject constructor(
     @Assisted initialState: PostDetailState,
-    userRepository: UserRepository
+    userRepository: UserRepository,
+    postRepository: PostRepository
 ) : MvRxViewModel<PostDetailState>(initialState) {
 
     init {
         userRepository.getUserInfo(initialState.post.userId)
             .subscribeOn(Schedulers.io())
             .execute { copy(user = it) }
+
+        postRepository.getCommentsForPost(initialState.post.id)
+            .subscribeOn(Schedulers.io())
+            .execute { copy(comments = it) }
     }
 
     @AssistedInject.Factory

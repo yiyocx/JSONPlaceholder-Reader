@@ -8,4 +8,6 @@ import javax.inject.Inject
 class PostRepository @Inject constructor(private val postService: PostService) {
 
     fun getPosts(): Single<List<Post>> = postService.getPosts()
+
+    fun getCommentsForPost(postId: Int) = postService.getCommentsForPost(postId)
 }
