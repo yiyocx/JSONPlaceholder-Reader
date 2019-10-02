@@ -13,6 +13,7 @@ import com.airbnb.mvrx.withState
 import kotlinx.android.synthetic.main.fragment_main.*
 import yiyo.com.postreader.PostItemBindingModel_
 import yiyo.com.postreader.R
+import yiyo.com.postreader.data.models.PostFull
 import yiyo.com.postreader.ui.MainViewModel
 import yiyo.com.postreader.utils.SwipeTouchCallback
 
@@ -35,6 +36,12 @@ class PostListFragment : BaseMvRxFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
+        postsController.observeActions()
+            .subscribe {
+                if (it is PostFull) {
+                    viewModel.showPostDetail(it)
+                }
+            }
     }
 
     private fun setupRecyclerView() {

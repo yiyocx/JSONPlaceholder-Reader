@@ -1,4 +1,4 @@
-package yiyo.com.postreader
+package yiyo.com.postreader.ui.posts
 
 import com.airbnb.mvrx.MvRxState
 import yiyo.com.postreader.data.models.PostFull

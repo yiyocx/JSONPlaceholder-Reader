@@ -3,6 +3,7 @@ package yiyo.com.postreader.ui
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.lifecycle.Observer
 import androidx.viewpager2.widget.ViewPager2
 import com.airbnb.mvrx.BaseMvRxActivity
 import com.airbnb.mvrx.viewModel
@@ -11,8 +12,9 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import yiyo.com.postreader.R
-import yiyo.com.postreader.ui.posts.SectionsPagerAdapter
-import yiyo.com.postreader.ui.posts.TAB_TITLES
+import yiyo.com.postreader.data.models.ActionsUIModel
+import yiyo.com.postreader.ui.SectionsPagerAdapter.Companion.TAB_TITLES
+import yiyo.com.postreader.ui.detail.PostDetailDialogFragment
 import yiyo.com.postreader.utils.component
 import javax.inject.Inject
 
@@ -45,6 +47,15 @@ class MainActivity : BaseMvRxActivity() {
             viewModel.removeAllPosts()
             Snackbar.make(it, R.string.all_post_deleted, Snackbar.LENGTH_LONG).show()
         }
+
+        viewModel.actions().observe(this, Observer { action ->
+            when (action) {
+                is ActionsUIModel.ShowPost -> {
+                    PostDetailDialogFragment.newInstance(action.post)
+                        .show(supportFragmentManager, "")
+                }
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

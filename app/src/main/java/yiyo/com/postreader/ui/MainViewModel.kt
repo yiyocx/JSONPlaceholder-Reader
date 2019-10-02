@@ -1,14 +1,17 @@
 package yiyo.com.postreader.ui
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import yiyo.com.postreader.PostListState
-import yiyo.com.postreader.data.PostRepository
+import yiyo.com.postreader.data.models.ActionsUIModel
 import yiyo.com.postreader.data.models.PostFull
+import yiyo.com.postreader.data.repositories.PostRepository
+import yiyo.com.postreader.ui.posts.PostListState
 import yiyo.com.postreader.utils.MvRxViewModel
 import yiyo.com.postreader.utils.toPostFull
 
@@ -20,6 +23,8 @@ class MainViewModel @AssistedInject constructor(
     init {
         loadAllPosts()
     }
+
+    private val mutableActions = MutableLiveData<ActionsUIModel>()
 
     fun loadAllPosts() {
         postRepository.getPosts()
@@ -36,6 +41,19 @@ class MainViewModel @AssistedInject constructor(
 
     fun removeAllPosts() = setState { copy(posts = emptyList()) }
 
+    fun showPostDetail(post: PostFull) {
+        mutableActions.value = ActionsUIModel.ShowPost(post)
+    }
+
+    fun markAsSeen(postId: Int) = setState {
+        val newData = posts.map { post ->
+            if (post.id == postId) post.copy(unseen = false) else post
+        }
+        copy(posts = newData)
+    }
+
+    fun actions(): LiveData<ActionsUIModel> = mutableActions
+
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: PostListState): MainViewModel
@@ -46,8 +64,8 @@ class MainViewModel @AssistedInject constructor(
             viewModelContext: ViewModelContext,
             state: PostListState
         ): MainViewModel? {
-            val fragment = viewModelContext.activity<MainActivity>()
-            return fragment.viewModelFactory.create(state)
+            val mainActivity = viewModelContext.activity<MainActivity>()
+            return mainActivity.viewModelFactory.create(state)
         }
     }
 }

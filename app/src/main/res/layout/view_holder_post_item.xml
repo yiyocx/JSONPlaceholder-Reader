@@ -8,6 +8,10 @@
         <variable
             name="post"
             type="yiyo.com.postreader.data.models.PostFull" />
+
+        <variable
+            name="onClick"
+            type="android.view.View.OnClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -19,8 +23,9 @@
         android:clickable="true"
         android:elevation="12dp"
         android:focusable="true"
+        android:onClick="@{onClick}"
         app:cardCornerRadius="8dp"
-        app:rippleColor="@color/colorPrimary">
+        app:rippleColor="@color/secondaryLightColor">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:ellipsize="end"
                 android:maxLines="2"
                 android:text="@{post.body}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -39,7 +45,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
                 app:layout_constraintStart_toStartOf="@+id/textViewTitle"
                 app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
-                tools:text="@tools:sample/lorem" />
+                tools:text="@tools:sample/lorem/random" />
 
             <TextView
                 android:id="@+id/textViewTitle"
@@ -48,6 +54,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:ellipsize="end"
                 android:maxLines="1"
                 android:text="@{post.title}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Title"

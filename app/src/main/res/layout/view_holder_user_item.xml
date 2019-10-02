@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="yiyo.com.postreader.data.models.User" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="0dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="bottom"
+                android:text="@{user.name}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@tools:sample/full_names" />
+
+            <TextView
+                android:id="@+id/textViewUserName"
+                android:layout_width="0dp"
+                android:layout_height="18dp"
+                android:gravity="top"
+                android:text="@{user.username}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                app:layout_constraintEnd_toEndOf="@+id/textViewName"
+                app:layout_constraintStart_toStartOf="@+id/textViewName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewName"
+                tools:text="@tools:sample/full_names" />
+
+            <TextView
+                android:id="@+id/textViewEmail"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:drawableStart="@drawable/ic_email"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@{user.email}"
+                app:layout_constraintEnd_toEndOf="@+id/textViewUserName"
+                app:layout_constraintStart_toStartOf="@+id/textViewUserName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUserName"
+                tools:text="@tools:sample/us_zipcodes" />
+
+            <TextView
+                android:id="@+id/textViewWebsite"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:drawableStart="@drawable/ic_laptop"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@{user.website}"
+                app:layout_constraintEnd_toEndOf="@+id/textViewUserName"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="@+id/textViewUserName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewPhone"
+                tools:text="@tools:sample/lorem" />
+
+            <TextView
+                android:id="@+id/textViewPhone"
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:drawableStart="@drawable/ic_phone"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:text="@{user.phone}"
+                app:layout_constraintEnd_toEndOf="@+id/textViewUserName"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/textViewUserName"
+                app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+                tools:text="@tools:sample/us_phones" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>
