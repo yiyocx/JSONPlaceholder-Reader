@@ -15,6 +15,7 @@ class PostsController : TypedEpoxyController<List<PostFull>>() {
             postItem {
                 id(post.id)
                 post(post)
+                showIcon(post.unseen || post.favorite)
                 onClick { _ -> actions.onNext(post) }
             }
         }

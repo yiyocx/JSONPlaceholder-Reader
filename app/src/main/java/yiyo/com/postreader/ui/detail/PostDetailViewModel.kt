@@ -26,6 +26,10 @@ class PostDetailViewModel @AssistedInject constructor(
             .execute { copy(comments = it) }
     }
 
+    fun toggleFavorite() {
+        setState { copy(post = post.copy(favorite = !post.favorite)) }
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: PostDetailState): PostDetailViewModel

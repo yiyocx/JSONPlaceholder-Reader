@@ -54,6 +54,17 @@ class MainViewModel @AssistedInject constructor(
 
     fun actions(): LiveData<ActionsUIModel> = mutableActions
 
+    fun handleFavorite(post: PostFull) {
+        setState {
+            val result = posts.map {
+                if (it.id == post.id) {
+                    it.copy(favorite = post.favorite)
+                } else it
+            }
+            copy(posts = result)
+        }
+    }
+
     @AssistedInject.Factory
     interface Factory {
         fun create(initialState: PostListState): MainViewModel

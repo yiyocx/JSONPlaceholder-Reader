@@ -28,5 +28,13 @@
         android:paddingBottom="@dimen/list_item_spacing_half"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:context=".ui.detail.PostDetailDialogFragment"
-        tools:listitem="@layout/view_holder_post_detail_item" />
+        tools:listitem="@layout/view_holder_comment_item" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        tools:srcCompat="@drawable/ic_star_empty" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

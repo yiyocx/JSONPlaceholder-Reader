@@ -10,6 +10,10 @@
             type="yiyo.com.postreader.data.models.PostFull" />
 
         <variable
+            name="showIcon"
+            type="Boolean" />
+
+        <variable
             name="onClick"
             type="android.view.View.OnClickListener" />
     </data>
@@ -69,14 +73,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:src="@drawable/ic_dot"
-                android:visibility="@{post.unseen}"
+                android:contentDescription="@null"
+                android:src="@{ post.favorite ? @drawable/ic_star_filled : @drawable/ic_dot}"
+                android:visibility="@{showIcon}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/textViewTitle"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_dot" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
