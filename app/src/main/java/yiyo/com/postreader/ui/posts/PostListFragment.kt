@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.BaseMvRxFragment
@@ -13,7 +14,7 @@ import com.airbnb.mvrx.withState
 import kotlinx.android.synthetic.main.fragment_post_list.*
 import yiyo.com.postreader.PostItemBindingModel_
 import yiyo.com.postreader.R
-import yiyo.com.postreader.data.models.PostFull
+import yiyo.com.postreader.data.models.ActionsUIModel
 import yiyo.com.postreader.ui.MainViewModel
 import yiyo.com.postreader.utils.SwipeTouchCallback
 
@@ -36,12 +37,11 @@ class PostListFragment : BaseMvRxFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupRecyclerView()
-        postsController.observeActions()
-            .subscribe {
-                if (it is PostFull) {
-                    viewModel.showPostDetail(it)
-                }
+        postsController.uiActions().observe(this, Observer {
+            if (it is ActionsUIModel.ShowPost) {
+                viewModel.showPostDetail(it.post)
             }
+        })
     }
 
     private fun setupRecyclerView() {

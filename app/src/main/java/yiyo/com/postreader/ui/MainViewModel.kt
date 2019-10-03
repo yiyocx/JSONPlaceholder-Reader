@@ -31,15 +31,16 @@ class MainViewModel @AssistedInject constructor(
             .map { it.mapIndexed { index, post -> post.toPostFull(index < 20) } }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .execute { result -> copy(posts = result().orEmpty()) }
+            .execute { result -> copy(posts = result().orEmpty(), favorites = emptyList()) }
     }
 
     fun removePost(post: PostFull) = setState {
         val newPosts = posts.filter { it != post }
-        copy(posts = newPosts)
+        val newFavorites = favorites.filter { it != post }
+        copy(posts = newPosts, favorites = newFavorites)
     }
 
-    fun removeAllPosts() = setState { copy(posts = emptyList()) }
+    fun removeAllPosts() = setState { copy(posts = emptyList(), favorites = emptyList()) }
 
     fun showPostDetail(post: PostFull) {
         mutableActions.value = ActionsUIModel.ShowPost(post)
@@ -56,12 +57,18 @@ class MainViewModel @AssistedInject constructor(
 
     fun handleFavorite(post: PostFull) {
         setState {
-            val result = posts.map {
+            val allPosts = posts.map {
                 if (it.id == post.id) {
                     it.copy(favorite = post.favorite)
                 } else it
             }
-            copy(posts = result)
+
+            val allFavorites = if (post.favorite) {
+                favorites.plus(post)
+            } else {
+                favorites.filter { it.id != post.id }
+            }
+            copy(posts = allPosts, favorites = allFavorites)
         }
     }
 
